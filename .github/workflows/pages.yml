@@ -25,6 +25,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/configure-pages@v5
+      # 배포마다 CSS·JS 주소에 커밋 번호를 붙여, 브라우저가 예전 파일을 캐시로 쓰지 않게 합니다.
+      - name: Add cache-busting version to CSS and JS links
+        run: |
+          v="${GITHUB_SHA::7}"
+          sed -i "s#href=\"css/style.css\"#href=\"css/style.css?v=$v\"#; s#src=\"js/main.js\"#src=\"js/main.js?v=$v\"#" site/*.html
+          grep -c "?v=$v" site/*.html
       - uses: actions/upload-pages-artifact@v5
         with:
           path: site
