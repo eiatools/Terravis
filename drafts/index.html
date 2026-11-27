@@ -1,0 +1,144 @@
+<title>테라비스 홈페이지 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 로고를 머리에 두고 세 시안 카드 3열 + 비교표. 허브는 담백하게, 시안이 주인공. */
+:root{
+  --bg:#F3F7F8; --card:#FFFFFF; --fg:#101D31; --fg-2:#4F6072; --line:#DCE4EA; --accent:#0B2545; --teal:#008D84;
+  --f:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1626;--card:#132136;--fg:#E3EAF1;--fg-2:#9FB0C2;--line:#24344A;--accent:#7FD6D8;--teal:#41C3C7;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0C1626;--card:#132136;--fg:#E3EAF1;--fg-2:#9FB0C2;--line:#24344A;--accent:#7FD6D8;--teal:#41C3C7;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 15px/1.7 var(--f);word-break:keep-all}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:44px 64px}
+h1,h2,h3{margin:0;text-wrap:balance}
+.top{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;margin-bottom:36px;padding:24px 28px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.top img{height:64px;width:auto}
+.top h1{font-size:clamp(22px,2.8vw,30px);font-weight:900;letter-spacing:-.02em}
+.top p{margin:4px 0 0;color:var(--fg-2)}
+.chip{font-size:12.5px;color:var(--fg-2);border:1px solid var(--line);padding:4px 12px;border-radius:99px;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.thumb{aspect-ratio:16/10;max-width:100%;position:relative;overflow:hidden;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
+.thumb img{height:22px;width:auto}
+.thumb .t{font-size:22px;font-weight:900;line-height:1.25;letter-spacing:-.03em;position:relative;z-index:1}
+.a .thumb{background:#fff;color:#0B2545;box-shadow:inset 0 0 0 1px #E3E9EE}
+.a .thumb::before{content:"";position:absolute;right:0;top:0;bottom:0;width:38%;background:linear-gradient(135deg,#F7F9FC,#EAF0F4)}
+.a .thumb::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:radial-gradient(120% 90px at 30% 120%,#41C3C7 50%,transparent 51%),radial-gradient(140% 80px at 70% 130%,#A8E8E7 55%,transparent 56%);opacity:.75}
+.a .t em{font-style:normal;color:#008D84}
+.b .thumb{background:linear-gradient(135deg,#071A33,#0B2545 40%,#064B60 72%,#0A8C7E);color:#fff}
+.b .thumb::after{content:"";position:absolute;right:-18px;bottom:-26px;width:150px;height:150px;border-radius:50%;border:12px solid rgba(168,232,231,.55);border-right-color:transparent;transform:rotate(-30deg)}
+.c .thumb{background:#F1F7F7;color:#0B2545}
+.c .thumb::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-40px;height:110px;border-radius:50% 50% 0 0;background:repeating-linear-gradient(180deg,#41C3C7 0 7px,transparent 7px 11px,#008D84 11px 19px,transparent 19px 23px,#064B60 23px 32px,transparent 32px 36px,#0B2545 36px 200px)}
+.body{padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.body .k{font-size:12.5px;font-weight:700;color:var(--teal);letter-spacing:.04em}
+.body h2{font-size:21px;font-weight:700}
+.body p{margin:0;color:var(--fg-2)}
+.body ul{margin:0;padding-left:18px;color:var(--fg-2);font-size:14px}
+.go{margin-top:auto;display:inline-flex;justify-content:center;padding:11px 16px;border-radius:8px;background:var(--accent);color:var(--card);font-weight:700;text-decoration:none}
+.go:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+h3.sub{font-size:18px;font-weight:700;margin:44px 0 14px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--fg-2);font-weight:500;width:140px}
+tr:last-child td,tr:last-child th{border-bottom:0}
+.notes{margin-top:26px;color:var(--fg-2);font-size:13.5px;display:grid;gap:4px}
+.site-box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:30px;display:grid;grid-template-columns:1fr 1.3fr;gap:32px;margin-bottom:44px}
+.site-box>*{min-width:0}
+.site-box>div{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.site-box .k{font-size:12.5px;font-weight:700;color:var(--teal);letter-spacing:.04em}
+.site-box h2{font-size:24px;font-weight:900;letter-spacing:-.02em}
+.site-box p{margin:0;color:var(--fg-2)}
+.site-box .go{margin-top:8px}
+.pages{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line)}
+.pages a{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--fg)}
+.pages a:hover b{color:var(--teal)}
+.pages span{color:var(--fg-2);font-size:14px}
+@media (max-width:900px){.site-box{grid-template-columns:1fr}.pages a{grid-template-columns:1fr;gap:0}}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.thumb{aspect-ratio:16/7}.top{grid-template-columns:auto 1fr}.top .chip{display:none}}
+@media (max-width:520px){.top{grid-template-columns:1fr;padding:20px}.top img{height:48px}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <img src="assets/logo-vertical.webp" alt="TERRAVIS 테라비스 로고" width="1774" height="1283">
+    <div>
+      <h1>주식회사 테라비스 홈페이지 시안</h1>
+      <p>로고와 대표이사 명함을 기준으로 다시 만든 세 가지 방향입니다. 카드를 눌러 전체 페이지를 확인하세요.</p>
+    </div>
+    <span class="chip">2026.11 · 확정안 A</span>
+  </div>
+
+  <section class="site-box" aria-labelledby="site-title">
+    <div>
+      <span class="k">확정안 · 시안 A 기준</span>
+      <h2 id="site-title">테라비스 홈페이지 (5개 페이지)</h2>
+      <p>시안 A를 바탕으로 메인과 하위 페이지를 모두 만들었습니다. 상단 메뉴로 페이지를 오갈 수 있습니다.</p>
+      <a class="go" href="site/index.html">홈페이지 열기</a>
+    </div>
+    <ul class="pages">
+      <li><a href="site/index.html"><b>메인</b><span>업무분야, 수행 절차, 대표 인사말, 두 사무소</span></a></li>
+      <li><a href="site/about.html"><b>회사소개</b><span>인사말, 핵심가치, 회사개요, 연혁, 조직, CI, 오시는 길</span></a></li>
+      <li><a href="site/services.html"><b>업무분야</b><span>평가 4종의 대상, 주요 업무, 산출물, 관련 업무</span></a></li>
+      <li><a href="site/process.html"><b>평가항목·절차</b><span>21개 평가항목, 유형별 절차·기간 탭, 계절별 조사</span></a></li>
+      <li><a href="site/contact.html"><b>고객문의</b><span>상담 양식, 상담 진행 순서, 오시는 길</span></a></li>
+    </ul>
+  </section>
+
+  <h3 class="sub" style="margin-top:0">2차 시안 3종</h3>
+  <div class="grid">
+    <article class="card a">
+      <div class="thumb"><img src="assets/logo-horizontal.webp" alt="" width="1959" height="459"><span class="t"><em>지속 가능한 개발</em>의<br>길을 엽니다</span></div>
+      <div class="body">
+        <span class="k">시안 A · 명함형</span>
+        <h2>단정한 기업형</h2>
+        <p>명함 뒷면 구성(이름 패널, 세로 구분선, 아이콘 연락처, 아쿠아 물결)을 그대로 페이지로 옮겼습니다. 흰 바탕에 남색 글씨로 가장 단정합니다.</p>
+        <ul><li>세로형 로고 패널 + 물결 히어로</li><li>대표이사 인사말, 21개 평가항목, 수행 절차</li><li>본사·안양사무소 오시는 길, 상담 양식</li></ul>
+        <a class="go" href="a-card.html">시안 A 보기</a>
+      </div>
+    </article>
+    <article class="card b">
+      <div class="thumb"><img src="assets/logo-horizontal-white.webp" alt="" width="1959" height="459"><span class="t">땅을 보는 눈이<br>다릅니다.</span></div>
+      <div class="body">
+        <span class="k">시안 B · 딥네이비</span>
+        <h2>신뢰·고객중심형</h2>
+        <p>로고 심볼의 남색→청록 그라데이션을 첫 화면 전체에 깔았습니다. 사업자가 궁금해하는 절차와 기간을 앞세웠습니다.</p>
+        <ul><li>심볼 곡선이 그려지는 히어로 애니메이션</li><li>평가 유형별 절차·법정 기간 탭</li><li>대상사업 6종, FAQ, 진행 현황판 예시</li></ul>
+        <a class="go" href="b-navy.html">시안 B 보기</a>
+      </div>
+    </article>
+    <article class="card c">
+      <div class="thumb"><img src="assets/logo-horizontal.webp" alt="" width="1959" height="459"><span class="t">개발의 기준을<br>만듭니다.</span></div>
+      <div class="body">
+        <span class="k">시안 C · 필드라인</span>
+        <h2>현장·전문성 강조형</h2>
+        <p>심볼 아래쪽의 곡선 밭고랑 띠를 화면 폭 전체로 펼쳤습니다. 큰 굵은 제목과 사계절 조사 달력으로 현장 역량을 보여줍니다.</p>
+        <ul><li>아쿠아→남색 곡선 띠 히어로</li><li>계절별 조사 대상, 법정보호종 대응</li><li>전북·수도권 두 거점 소개</li></ul>
+        <a class="go" href="c-field.html">시안 C 보기</a>
+      </div>
+    </article>
+  </div>
+
+  <h3 class="sub">한눈에 비교</h3>
+  <div class="tbl"><table>
+    <thead><tr><th></th><td><b>A · 명함형</b></td><td><b>B · 딥네이비</b></td><td><b>C · 필드라인</b></td></tr></thead>
+    <tbody>
+      <tr><th>바탕</th><td>흰색 + 연회색 패널</td><td>남색→청록 그라데이션, 본문 흰색</td><td>연한 아쿠아 + 남색 띠</td></tr>
+      <tr><th>로고 활용</th><td>세로형 로고를 명함처럼 크게</td><td>흰색 로고, 심볼 곡선을 그래픽화</td><td>심볼 + 영문 워드마크 조합</td></tr>
+      <tr><th>핵심 메시지</th><td>정확성·책임감·소통</td><td>인허가 일정과 협의 대응</td><td>직접 수행하는 사계절 현지조사</td></tr>
+      <tr><th>잘 맞는 대상</th><td>공공기관, 지자체</td><td>민간 사업자</td><td>대형·생태 민감 사업</td></tr>
+      <tr><th>인터랙션</th><td>상담 양식</td><td>절차·기간 탭, 곡선 애니메이션</td><td>정적</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="notes">
+    <span>· 회사명, 대표이사, 주소 2곳, 이메일, 웹주소는 명함 내용을 반영했습니다. 휴대전화 번호는 싣지 않았고, 대표전화·팩스·사업자등록번호는 비워 두었습니다.</span>
+    <span>· 대표이사 인사말(시안 A)과 거점별 권역 구분(시안 C)은 예시 문안입니다.</span>
+    <span>· 명함 서체인 Pretendard를 우선 지정했고, 설치되지 않은 환경에서는 Noto Sans KR로 표시됩니다.</span>
+    <span>· 법령 표현은 2025년 10월 개정된 「환경영향평가법」(소관 기후에너지환경부) 기준입니다.</span>
+  </div>
+</div>
