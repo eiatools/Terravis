@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>테라비스 시안 C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Michroma&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap">
+<style>
+/* Layout: 로고 심볼 아래쪽의 곡선 밭고랑 띠를 화면 폭 전체의 대형 그래픽으로 펼친 현장형. 연한 아쿠아 바탕, 큰 굵은 제목, 좌측 라벨 열 + 우측 본문 열. */
+:root{
+  --bg:#F1F7F7; --bg-2:#E3EFF0; --card:#FFFFFF;
+  --navy:#0B2545; --ink:#101D31; --ink-2:#45576A; --ink-3:#7D8E9C;
+  --deep:#064B60; --teal:#008D84; --aqua:#41C3C7; --aqua-2:#A8E8E7;
+  --line:rgba(11,37,69,.12);
+  --f:Pretendard,"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-en:"Michroma","Noto Sans KR",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.8 var(--f);word-break:keep-all;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance;color:var(--navy)}
+.en{font-family:var(--f-en);font-size:10.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal)}
+
+.draft{background:var(--navy);color:#B5C6D6;font-size:13px}
+.draft .wrap{display:flex;justify-content:space-between;gap:12px;padding-block:8px;flex-wrap:wrap}
+.draft a{color:#fff;text-underline-offset:3px}
+
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(241,247,247,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;height:72px;gap:32px}
+header.site .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+header.site .logo img{height:40px;width:auto}
+header.site .logo span{display:grid;line-height:1.15}
+header.site .logo b{font-family:var(--f-en);font-weight:400;font-size:15px;letter-spacing:.2em;color:var(--navy)}
+header.site .logo small{font-size:11.5px;letter-spacing:.5em;color:var(--ink-2)}
+nav.main{display:flex;gap:28px;margin-left:auto;font-size:15px;font-weight:500}
+nav.main a{text-decoration:none;color:var(--ink-2)}
+nav.main a:hover{color:var(--teal)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;font:700 15px var(--f);text-decoration:none;border-radius:6px;border:0;cursor:pointer;background:var(--teal);color:#fff;transition:background .2s}
+.btn:hover{background:var(--deep)}
+.btn.out{background:transparent;color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--navy)}
+.btn.out:hover{background:var(--navy);color:#fff}
+header .btn{padding:9px 16px;font-size:14px}
+
+/* hero */
+.hero{position:relative;overflow:hidden}
+.hero .wrap{position:relative;z-index:2;padding-block:88px 0}
+.hero .en{display:block;margin-bottom:24px}
+.hero h1{font-size:clamp(40px,7vw,96px);line-height:1.1;font-weight:900;letter-spacing:-.045em;max-width:11em}
+.hero h1 .t{background:linear-gradient(120deg,var(--navy) 10%,var(--deep) 50%,var(--teal) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-row{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-top:34px}
+.hero p{margin:0;color:var(--ink-2);font-size:18px;max-width:34em}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.fields{display:block;width:100%;height:clamp(150px,22vw,300px);margin-top:56px}
+
+/* statement */
+.statement{background:var(--navy);color:#D6E2EC}
+.statement .wrap{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-block:72px}
+.statement .en{color:var(--aqua);padding-top:8px}
+.statement p{margin:0;font-size:clamp(20px,2.4vw,29px);line-height:1.65;font-weight:300;letter-spacing:-.015em}
+.statement p b{font-weight:700;color:var(--aqua-2)}
+
+section{padding-block:104px}
+.sh{display:grid;grid-template-columns:220px 1fr;gap:40px;margin-bottom:52px}
+.sh .en{padding-top:12px}
+.sh h2{font-size:clamp(28px,3.8vw,48px);line-height:1.22;font-weight:900;letter-spacing:-.035em}
+.sh p{color:var(--ink-2);margin:16px 0 0;max-width:38em}
+
+/* services rows */
+.rows{border-top:2px solid var(--navy)}
+.srow{display:grid;grid-template-columns:220px 1fr 1fr;gap:40px;padding:30px 0;border-bottom:1px solid var(--line);align-items:start}
+.srow .stage{font-size:14px;font-weight:700;color:var(--teal);display:flex;gap:10px;align-items:center}
+.srow .stage::before{content:"";width:22px;height:3px;background:currentColor;border-radius:2px}
+.srow h3{font-size:clamp(22px,2.4vw,28px);font-weight:700;letter-spacing:-.02em}
+.srow h3 small{display:block;font-size:13.5px;font-weight:500;color:var(--ink-3);margin-top:4px;letter-spacing:0}
+.srow p{margin:0;color:var(--ink-2);font-size:15.5px}
+
+/* seasons */
+.seasons{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.season{background:var(--card);border-radius:12px;padding:26px 24px 28px;position:relative;overflow:hidden}
+.season::before{content:"";position:absolute;inset:0 0 auto;height:5px;background:var(--c)}
+.season .m{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.season h3{font-size:30px;font-weight:900;margin:4px 0 14px}
+.season ul{margin:0;padding:0;list-style:none;display:grid;gap:7px;font-size:15px;color:var(--ink-2)}
+.season li{padding-left:16px;position:relative}
+.season li::before{content:"";position:absolute;left:0;top:.75em;width:7px;height:7px;border-radius:50%;background:var(--c)}
+.protect{margin-top:14px;background:var(--bg-2);border-radius:12px;padding:26px 28px;display:grid;grid-template-columns:200px repeat(3,1fr);gap:28px}
+.protect .en{padding-top:4px}
+.protect h4{margin:0 0 4px;font-size:17px;color:var(--navy)}
+.protect p{margin:0;font-size:14.5px;color:var(--ink-2)}
+
+/* capabilities */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-block:1px solid var(--line)}
+.cap{background:var(--bg);padding:30px 28px 34px 0;display:grid;gap:12px;align-content:start}
+.cap+.cap{padding-left:28px}
+.cap .k{font-size:54px;font-weight:900;line-height:1;letter-spacing:-.05em;background:linear-gradient(120deg,var(--navy),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cap h3{font-size:20px;font-weight:700}
+.cap p{margin:0;color:var(--ink-2);font-size:15px}
+
+/* bases */
+.bases{background:var(--card);border-radius:16px;padding:44px;display:grid;grid-template-columns:1fr 160px 1fr;gap:20px;align-items:center}
+.base{display:grid;gap:10px}
+.base .pin{display:flex;gap:10px;align-items:center}
+.base .pin i{width:14px;height:14px;border-radius:50%;background:var(--navy);box-shadow:0 0 0 6px rgba(11,37,69,.12)}
+.base.sub .pin i{background:var(--teal);box-shadow:0 0 0 6px rgba(0,141,132,.14)}
+.base .pin b{font-size:13px;font-weight:700;color:var(--ink-2)}
+.base h3{font-size:24px;font-weight:900;letter-spacing:-.02em}
+.base address{font-style:normal;color:var(--ink-2);font-size:15px;user-select:all}
+.base .area{font-size:14px;color:var(--teal);font-weight:500}
+.link svg{width:100%;height:60px}
+.note{font-size:13px;color:var(--ink-3);margin-top:14px}
+
+/* contact */
+.contact{background:linear-gradient(135deg,var(--navy),var(--deep) 65%,var(--teal));color:#fff;position:relative;overflow:hidden}
+.contact .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:end;position:relative;z-index:1}
+.contact h2{color:#fff;font-size:clamp(32px,4.4vw,56px);line-height:1.18;font-weight:900;letter-spacing:-.04em}
+.contact p{color:#C9D9E4;margin:18px 0 0}
+.contact dl{margin:0;display:grid;gap:16px}
+.contact dt{font-family:var(--f-en);font-size:10.5px;letter-spacing:.24em;color:var(--aqua)}
+.contact dd{margin:2px 0 0;font-size:20px;font-weight:500;user-select:all}
+.contact .mark{position:absolute;right:-80px;top:-60px;width:420px;opacity:.07}
+
+footer.site{background:var(--navy);color:#8EA3B6;font-size:13.5px;border-top:1px solid rgba(255,255,255,.08)}
+footer.site .wrap{padding-block:36px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:1000px){
+  nav.main{display:none} header .btn{margin-left:auto}
+  .hero-row{grid-template-columns:1fr}
+  .statement .wrap,.sh{grid-template-columns:1fr;gap:12px}
+  .srow{grid-template-columns:1fr;gap:8px}
+  .seasons{grid-template-columns:1fr 1fr}
+  .protect{grid-template-columns:1fr 1fr}
+  .protect .en{grid-column:1/-1}
+  .caps{grid-template-columns:1fr}
+  .cap,.cap+.cap{padding:26px 0}
+  .bases{grid-template-columns:1fr;padding:30px 24px}
+  .link svg{height:40px;transform:rotate(90deg);width:60px;justify-self:start}
+  .contact .wrap{grid-template-columns:1fr;gap:36px}
+}
+@media (max-width:600px){
+  section{padding-block:76px}
+  .hero .wrap{padding-top:60px}
+  .seasons,.protect{grid-template-columns:1fr}
+  header.site .logo small{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="draft"><div class="wrap">
+  <span><b>시안 C · 필드라인</b> 로고의 곡선 띠를 확장한 현장·전문성 강조형. 권역 구분은 제안 문구입니다.</span>
+  <a href="index.html">← 시안 목록</a>
+</div></div>
+
+<header class="site"><div class="wrap">
+  <a class="logo" href="#top" aria-label="테라비스 홈"><img src="assets/mark.webp" alt="" width="472" height="459"><span><b>TERRAVIS</b><small>테라비스</small></span></a>
+  <nav class="main" aria-label="주 메뉴">
+    <a href="#work">업무</a><a href="#field">현지조사</a><a href="#capability">역량</a><a href="#bases">거점</a>
+  </nav>
+  <a class="btn" href="#contact">문의하기</a>
+</div></header>
+
+<main id="top">
+<section class="hero" style="padding:0">
+  <div class="wrap">
+    <span class="en">Terra · Vision · Environmental Impact Assessment</span>
+    <h1>땅을 보는 눈으로<br><span class="t">개발의 기준</span>을 만듭니다.</h1>
+    <div class="hero-row">
+      <p>주식회사 테라비스는 제1종 환경영향평가업체입니다. 사계절 현지조사로 땅과 생태를 직접 기록하고, 그 자료로 개발과 보전이 함께 갈 수 있는 길을 평가합니다.</p>
+      <div class="ctas"><a class="btn" href="#contact">사업 부지 검토 요청</a><a class="btn out" href="#field">조사 방식 보기</a></div>
+    </div>
+  </div>
+  <svg class="fields" id="fields" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true"></svg>
+</section>
+
+<div class="statement"><div class="wrap">
+  <span class="en">Our Principle</span>
+  <p>환경영향평가의 질은 <b>현장에서 얼마나 오래, 얼마나 정확히 보았는가</b>에서 결정됩니다. 테라비스는 조사한 연구원이 평가서를 쓰고, 협의가 끝날 때까지 직접 답합니다.</p>
+</div></div>
+
+<section id="work"><div class="wrap">
+  <div class="sh"><span class="en">Services</span><div><h2>네 가지 평가,<br>하나의 팀</h2><p>제1종 환경영향평가업으로서 「환경영향평가법」에 따른 평가서 작성을 모두 대행합니다.</p></div></div>
+  <div class="rows">
+    <div class="srow"><span class="stage">계획</span><h3>전략환경영향평가<small>정책계획 · 개발기본계획</small></h3><p>계획을 확정하기 전에 입지와 규모의 대안을 비교해, 보전가치가 높은 지역을 처음부터 피해 갑니다.</p></div>
+    <div class="srow"><span class="stage">인허가</span><h3>환경영향평가<small>6개 분야 21개 항목</small></h3><p>사계절 현지조사와 정량 예측으로 영향을 평가하고, 저감방안과 협의 대응까지 수행합니다.</p></div>
+    <div class="srow"><span class="stage">보전용도지역</span><h3>소규모환경영향평가<small>관리 · 농림 · 자연환경보전지역</small></h3><p>소규모 개발이라도 법정보호종 서식 가능성과 경관 영향을 먼저 확인하고 협의를 진행합니다.</p></div>
+    <div class="srow"><span class="stage">공사·운영</span><h3>사후환경영향조사<small>협의내용 이행 확인</small></h3><p>공사와 운영 기간 동안 같은 지점을 같은 방법으로 반복 조사해 변화를 기록합니다.</p></div>
+  </div>
+</div></section>
+
+<section id="field" style="padding-top:0"><div class="wrap">
+  <div class="sh"><span class="en">Field Survey</span><div><h2>계절이 바뀌면<br>보이는 생물도 바뀝니다.</h2><p>한 번의 조사로는 놓치는 종이 생깁니다. 분류군마다 출현 시기에 맞춰 조사 일정을 짭니다.</p></div></div>
+  <div class="seasons">
+    <div class="season" style="--c:var(--aqua)"><div class="m">3–5월</div><h3>봄</h3><ul><li>양서류 산란·번식 조사</li><li>봄철 식물상·개화기 식생</li><li>번식 조류 세력권</li></ul></div>
+    <div class="season" style="--c:var(--teal)"><div class="m">6–8월</div><h3>여름</h3><ul><li>곤충·저서성 대형무척추동물</li><li>어류 및 수질 현황</li><li>식생 군락 구조</li></ul></div>
+    <div class="season" style="--c:var(--deep)"><div class="m">9–11월</div><h3>가을</h3><ul><li>철새 도래 및 이동 경로</li><li>포유류 흔적·무인카메라</li><li>가을철 식물상</li></ul></div>
+    <div class="season" style="--c:var(--navy)"><div class="m">12–2월</div><h3>겨울</h3><ul><li>월동 조류 개체수</li><li>포유류 족적 조사</li><li>대기질 동절기 측정</li></ul></div>
+  </div>
+  <div class="protect">
+    <span class="en">Protected Species</span>
+    <div><h4>멸종위기 야생생물 Ⅰ·Ⅱ급</h4><p>출현 위치와 서식 범위를 GIS로 정리해 보호 방안을 평가서에 반영합니다.</p></div>
+    <div><h4>천연기념물 · 보호수</h4><p>관계 법령에 따른 별도 절차가 필요한지 초기에 확인합니다.</p></div>
+    <div><h4>대체서식지 · 이식</h4><p>회피가 어려울 때 이주·이식 계획과 사후 모니터링을 설계합니다.</p></div>
+  </div>
+</div></section>
+
+<section id="capability" style="padding-top:0"><div class="wrap">
+  <div class="sh"><span class="en">Capability</span><div><h2>측정부터 지도까지<br>직접 합니다.</h2></div></div>
+  <div class="caps">
+    <div class="cap"><span class="k">생태</span><h3>동·식물상 정밀조사</h3><p>식물·포유류·조류·양서파충류·어류·곤충 분류군별로 현장을 조사합니다.</p></div>
+    <div class="cap"><span class="k">측정</span><h3>대기·소음·수질 현황 측정</h3><p>계절별 현황을 측정해 영향 예측의 기준값을 확보합니다.</p></div>
+    <div class="cap"><span class="k">공간</span><h3>GIS · 드론 분석</h3><p>토지피복, 녹지자연도, 경관 변화를 지도와 단면으로 보여줍니다.</p></div>
+  </div>
+</div></section>
+
+<section id="bases" style="padding-top:0"><div class="wrap">
+  <div class="sh"><span class="en">Our Bases</span><div><h2>전북과 수도권,<br>두 거점에서 움직입니다.</h2></div></div>
+  <div class="bases">
+    <div class="base">
+      <div class="pin"><i></i><b>본사</b></div>
+      <h3>전북 완주</h3>
+      <address>전북특별자치도 완주군 삼례읍 삼례로 443, 706호<br>(우석대학교 본관 7층)</address>
+      <span class="area">호남·충청권 사업 대응</span>
+    </div>
+    <div class="link" aria-hidden="true"><svg viewBox="0 0 160 60"><path d="M6 30 Q80 -6 154 30" fill="none" stroke="#008D84" stroke-width="2" stroke-dasharray="6 6"/><circle cx="6" cy="30" r="5" fill="#0B2545"/><circle cx="154" cy="30" r="5" fill="#008D84"/></svg></div>
+    <div class="base sub">
+      <div class="pin"><i></i><b>안양사무소</b></div>
+      <h3>경기 안양</h3>
+      <address>경기도 안양시 만안구 덕천로 152번길 25<br>아이에스비즈타워센트럴 제20층 B동 2010A호</address>
+      <span class="area">수도권·강원권 사업 대응</span>
+    </div>
+  </div>
+  <p class="note">권역 구분은 시안용 제안 문구입니다.</p>
+</div></section>
+
+<section id="contact" class="contact">
+  <img class="mark" src="assets/mark-white.webp" alt="" width="472" height="459">
+  <div class="wrap">
+    <div>
+      <h2>부지 위치 하나면<br>검토를 시작할 수 있습니다.</h2>
+      <p>주소나 지번, 사업 면적을 알려주시면 평가 대상 여부와 필요한 조사 범위를 안내해 드립니다.</p>
+    </div>
+    <dl>
+      <div><dt>Mobile</dt><dd>010-6227-6558</dd></div>
+      <div><dt>E-mail</dt><dd>terravis2026@naver.com</dd></div>
+      <div><dt>Web</dt><dd>www.terravis.co.kr</dd></div>
+      <div><a class="btn" style="background:var(--aqua);color:var(--navy)" href="#contact">온라인 문의 남기기</a></div>
+    </dl>
+  </div>
+</section>
+</main>
+
+<footer class="site"><div class="wrap">
+  <span>주식회사 테라비스 · 대표이사 황유리 · 제1종 환경영향평가업 · 사업자등록번호 000-00-00000</span>
+  <span>© 2026 TERRAVIS Co., Ltd.</span>
+</div></footer>
+
+<script>
+(function(){
+  // 로고 심볼의 곡선 밭고랑을 화면 폭으로 펼친 띠 그래픽
+  const svg=document.getElementById('fields'),NS='http://www.w3.org/2000/svg';
+  const cols=['#A8E8E7','#7FD6D8','#41C3C7','#20A39E','#008D84','#0A6E73','#064B60','#0B3557','#0B2545'];
+  let y=70,html='',h=0;
+  cols.forEach((c,i)=>{
+    const t=8+i*2.4; h=80-i*5;
+    html+=`<path d="M0 ${y+h*.35} Q720 ${y-h} 1440 ${y+h*.35} L1440 ${y+h*.35+t} Q720 ${y-h+t} 0 ${y+h*.35+t}Z" fill="${c}"/>`;
+    y+=t+5;
+  });
+  html+=`<path d="M0 ${y+h*.35} Q720 ${y-h} 1440 ${y+h*.35} V300 H0Z" fill="#0B2545"/>`;
+  svg.innerHTML=html;
+})();
+</script>
+</body>
+</html>
