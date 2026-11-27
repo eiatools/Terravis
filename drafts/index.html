@@ -1,0 +1,116 @@
+<title>테라비스 홈페이지 시안</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Sans+KR:wght@600&family=Gothic+A1:wght@800&family=Hahmlet:wght@700&display=swap">
+<style>
+/* Layout: 세 시안을 나란히 비교하는 카드 3열 + 아래 비교표. 시안 자체가 주인공이라 허브는 담백하게. */
+:root{
+  --bg:#F4F6F4; --card:#FFFFFF; --fg:#18221D; --fg-2:#56645C; --line:#DDE3DE; --accent:#1F5A43;
+  --f:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111815;--card:#18211D;--fg:#E3EAE5;--fg-2:#9DAEA4;--line:#2A3630;--accent:#7FC2A2;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111815;--card:#18211D;--fg:#E3EAE5;--fg-2:#9DAEA4;--line:#2A3630;--accent:#7FC2A2;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 15px/1.7 var(--f);word-break:keep-all}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:48px 64px}
+h1,h2,h3{margin:0;text-wrap:balance}
+.top{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:36px}
+.top h1{font-size:clamp(26px,3.4vw,36px);font-weight:700;letter-spacing:-.02em}
+.top p{margin:8px 0 0;color:var(--fg-2);max-width:40em}
+.chip{font-size:12.5px;color:var(--fg-2);border:1px solid var(--line);padding:4px 12px;border-radius:99px;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.thumb{aspect-ratio:16/10;max-width:100%;position:relative;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;overflow:hidden}
+.thumb .t-sm{font-size:11px;letter-spacing:.12em;opacity:.8}
+.thumb .t-lg{font-size:24px;line-height:1.25;position:relative}
+.a .thumb{background:#F1F4EE;color:#14211A;background-image:repeating-radial-gradient(ellipse at 85% 30%,transparent 0 13px,rgba(28,73,53,.22) 13px 14px)}
+.a .t-lg{font-family:"IBM Plex Sans KR",sans-serif;font-weight:600}
+.b .thumb{background:linear-gradient(180deg,#0C2433 0%,#123B50 50%,#2C6E7E 78%,#E8B871 100%);color:#fff}
+.b .thumb::after{content:"";position:absolute;right:16%;bottom:22%;width:44px;height:44px;border-radius:50%;background:#F3C46C;box-shadow:0 0 50px 20px rgba(246,200,115,.45)}
+.b .t-lg{font-family:"Gothic A1",sans-serif;font-weight:800;letter-spacing:-.03em}
+.c .thumb{background:#0E1C18;color:#E4ECE5;background-image:linear-gradient(90deg,transparent 52%,rgba(63,138,94,.85) 52% 64%,rgba(147,176,98,.85) 64% 76%,rgba(216,196,126,.8) 76% 88%,rgba(111,147,174,.85) 88%)}
+.c .t-lg{font-family:"Hahmlet",serif;font-weight:700}
+.body{padding:22px 22px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.body .k{font-size:12.5px;font-weight:700;color:var(--accent);letter-spacing:.06em}
+.body h2{font-size:21px;font-weight:700}
+.body p{margin:0;color:var(--fg-2)}
+.sw{display:flex;gap:6px}
+.sw i{width:26px;height:26px;border-radius:6px;border:1px solid var(--line)}
+.body ul{margin:0;padding-left:18px;color:var(--fg-2);font-size:14px}
+.go{margin-top:auto;display:inline-flex;justify-content:center;padding:11px 16px;border-radius:8px;background:var(--accent);color:var(--card);font-weight:700;text-decoration:none}
+.go:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+h3.sub{font-size:18px;font-weight:700;margin:48px 0 14px}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--fg-2);font-weight:500;width:140px}
+thead th{font-weight:700;color:var(--fg)}
+tr:last-child td,tr:last-child th{border-bottom:0}
+.notes{margin-top:28px;color:var(--fg-2);font-size:13.5px;display:grid;gap:4px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}.thumb{aspect-ratio:16/7}}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>주식회사 테라비스 홈페이지 시안</h1>
+      <p>제1종 환경영향평가업체 홈페이지를 위한 세 가지 방향입니다. 카드를 눌러 각 시안의 전체 페이지를 확인하세요.</p>
+    </div>
+    <span class="chip">2026.11 · 초안</span>
+  </div>
+
+  <div class="grid">
+    <article class="card a">
+      <div class="thumb"><span class="t-sm">TERRAVIS · 시안 A</span><span class="t-lg">땅을 읽고,<br>기준선을 긋습니다.</span></div>
+      <div class="body">
+        <span class="k">시안 A · 등고선</span>
+        <h2>정밀·과학형</h2>
+        <p>측량도면과 야장에서 가져온 구성입니다. 등고선 지도 위에 조사 지점을 찍고, 21개 평가항목을 표로 보여줍니다.</p>
+        <div class="sw"><i style="background:#1C4935"></i><i style="background:#B07228"></i><i style="background:#F1F4EE"></i><i style="background:#14211A"></i></div>
+        <ul><li>등고선 히어로 (마우스 따라 표고 표시)</li><li>6개 분야 21개 평가항목 매트릭스</li><li>수행실적 표, 기술인력 구성</li></ul>
+        <a class="go" href="a-contour.html">시안 A 보기</a>
+      </div>
+    </article>
+    <article class="card b">
+      <div class="thumb"><span class="t-sm">테라비스 · 시안 B</span><span class="t-lg">일정을 지키는<br>환경영향평가</span></div>
+      <div class="body">
+        <span class="k">시안 B · 수평선</span>
+        <h2>신뢰·고객중심형</h2>
+        <p>사업자(발주처)가 가장 궁금해하는 일정과 절차를 앞세운 구성입니다. 새벽 수평선 풍경으로 공공기관다운 신뢰감을 줍니다.</p>
+        <div class="sw"><i style="background:#0C2433"></i><i style="background:#23758A"></i><i style="background:#E6AC4A"></i><i style="background:#F2F6F7"></i></div>
+        <ul><li>평가 유형별 절차·법정 기간 탭</li><li>대상사업 6종 안내, 진행 현황판 예시</li><li>공지·FAQ, 무료 사전검토 유도</li></ul>
+        <a class="go" href="b-horizon.html">시안 B 보기</a>
+      </div>
+    </article>
+    <article class="card c">
+      <div class="thumb"><span class="t-sm">테라비스 · 시안 C</span><span class="t-lg">지켜야 할 땅과<br>쓸 수 있는 땅</span></div>
+      <div class="body">
+        <span class="k">시안 C · 생태지도</span>
+        <h2>현장·전문성 강조형</h2>
+        <p>어두운 숲 톤과 명조 제목의 에디토리얼 구성입니다. 생태 등급 지도와 사계절 조사 달력으로 현장 역량을 보여줍니다.</p>
+        <div class="sw"><i style="background:#0E1C18"></i><i style="background:#3F8A5E"></i><i style="background:#93B062"></i><i style="background:#D8C47E"></i></div>
+        <ul><li>사업예정지 생태 등급 래스터 지도</li><li>계절별 조사 대상, 법정보호종 대응</li><li>스토리형 수행 사례 카드</li></ul>
+        <a class="go" href="c-habitat.html">시안 C 보기</a>
+      </div>
+    </article>
+  </div>
+
+  <h3 class="sub">한눈에 비교</h3>
+  <div class="tbl"><table>
+    <thead><tr><th></th><td><b>A · 등고선</b></td><td><b>B · 수평선</b></td><td><b>C · 생태지도</b></td></tr></thead>
+    <tbody>
+      <tr><th>주요 대상</th><td>공공 발주처, 엔지니어링사</td><td>민간 사업자, 지자체 담당자</td><td>대형 개발사업, 생태 민감 지역 사업</td></tr>
+      <tr><th>핵심 메시지</th><td>정확한 조사와 빠짐없는 평가</td><td>인허가 일정 관리와 협의 대응</td><td>직접 수행하는 사계절 현지조사</td></tr>
+      <tr><th>분위기</th><td>밝은 종이, 도면, 차분함</td><td>밝고 친근, 기업형</td><td>어둡고 묵직, 잡지형</td></tr>
+      <tr><th>서체</th><td>IBM Plex Sans KR + Mono</td><td>Gothic A1</td><td>함렛(명조) + Noto Sans KR</td></tr>
+      <tr><th>인터랙션</th><td>등고선 위 표고 읽기</td><td>절차·기간 탭 전환</td><td>생태 등급 지도 (정적)</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="notes">
+    <span>· 실적, 인원, 수치, 등록번호, 연락처, 대표자명은 모두 예시 값(○○)입니다. 실제 자료로 바꿔 넣어야 합니다.</span>
+    <span>· 법령 표현은 2025년 10월 개정된 「환경영향평가법」(소관 기후에너지환경부) 기준입니다.</span>
+    <span>· 세 시안의 섹션과 문구는 서로 섞어 쓸 수 있습니다. 예: A의 디자인에 B의 절차 탭.</span>
+  </div>
+</div>

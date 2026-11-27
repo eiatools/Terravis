@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>테라비스 시안 A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap">
+<style>
+/* Layout: 좌측 정렬 12열 그리드. 등고선 지도가 히어로 오른쪽을 채우고, 본문은 측량 야장처럼 라벨-값 구조로 읽힌다. */
+:root{
+  --paper:#F1F4EE; --paper-2:#E4EAE1; --card:#FBFCFA;
+  --ink:#14211A; --ink-2:#4B5B51; --ink-3:#7A887F;
+  --pine:#1C4935; --pine-2:#2C6A4F; --ochre:#B07228;
+  --line:rgba(20,33,26,.14); --line-2:rgba(20,33,26,.28);
+  --f-sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono","IBM Plex Sans KR",ui-monospace,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.7 var(--f-sans);word-break:keep-all;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;margin:0}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
+/* draft strip */
+.draft{background:var(--ink);color:#DDE5DE;font-size:13px}
+.draft .wrap{display:flex;justify-content:space-between;gap:12px;padding-block:8px;flex-wrap:wrap}
+.draft a{color:#fff;text-underline-offset:3px}
+
+/* header */
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;gap:32px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo b{font-weight:700;letter-spacing:.18em;font-size:15px}
+.logo span{font-size:13px;color:var(--ink-2);border-left:1px solid var(--line-2);padding-left:10px}
+nav.main{display:flex;gap:26px;margin-left:auto;font-size:15px}
+nav.main a{text-decoration:none;color:var(--ink-2)}
+nav.main a:hover{color:var(--pine)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:2px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid var(--pine);transition:background .2s,color .2s}
+.btn.solid{background:var(--pine);color:#fff}
+.btn.solid:hover{background:var(--pine-2)}
+.btn.ghost{color:var(--pine)}
+.btn.ghost:hover{background:var(--pine);color:#fff}
+header .btn{padding:9px 16px;font-size:14px}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+#contour{position:absolute;inset:0;width:100%;height:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 30%,#000 58%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 30%,#000 58%)}
+.hero .wrap{position:relative;padding-block:96px 88px}
+.hero-copy{max-width:620px}
+.hero .eyebrow{display:inline-flex;gap:10px;align-items:center;color:var(--pine);margin-bottom:28px}
+.hero .eyebrow::before{content:"";width:28px;height:1px;background:var(--pine)}
+.hero h1{font-size:clamp(34px,5.2vw,60px);line-height:1.22;font-weight:600;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--pine)}
+.hero p.lead{font-size:18px;color:var(--ink-2);margin:28px 0 36px;max-width:34em}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.readout{position:absolute;right:max(20px,env(safe-area-inset-right,0px));bottom:20px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);text-align:right;line-height:1.8;font-variant-numeric:tabular-nums;background:color-mix(in srgb,var(--paper) 80%,transparent);padding:8px 12px;border:1px solid var(--line)}
+.readout b{color:var(--ink);font-weight:500}
+
+/* registry strip */
+.registry{border-bottom:1px solid var(--line);background:var(--card)}
+.registry dl{display:grid;grid-template-columns:repeat(4,1fr);margin:0}
+.registry div{padding:22px 24px;border-left:1px solid var(--line)}
+.registry div:first-child{border-left:0;padding-left:0}
+.registry dt{color:var(--ink-3);margin-bottom:4px}
+.registry dd{margin:0;font-weight:500}
+
+section{padding-block:104px}
+.sec-head{display:grid;grid-template-columns:240px 1fr;gap:40px;margin-bottom:56px}
+.sec-head .mono{color:var(--ochre);padding-top:10px}
+.sec-head h2{font-size:clamp(26px,3.2vw,38px);line-height:1.3;font-weight:600;letter-spacing:-.015em}
+.sec-head p{color:var(--ink-2);margin:16px 0 0;max-width:40em}
+
+/* services */
+.services{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--line-2)}
+.svc{padding:36px 36px 40px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:72px 1fr;gap:20px}
+.svc:nth-child(even){padding-left:36px;border-left:1px solid var(--line)}
+.svc .code{font-family:var(--f-mono);font-size:13px;color:var(--pine);border:1px solid var(--pine);height:44px;display:grid;place-items:center}
+.svc h3{font-size:21px;font-weight:600;margin-bottom:8px}
+.svc .when{font-size:14px;color:var(--ochre);font-weight:500;margin-bottom:10px}
+.svc p{margin:0;color:var(--ink-2);font-size:15.5px}
+.svc ul{margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.svc li{font-size:13px;padding:3px 10px;background:var(--paper-2);border-radius:2px}
+.related{margin-top:28px;color:var(--ink-2);font-size:15px}
+.related b{color:var(--ink);font-weight:600;margin-right:8px}
+
+/* matrix */
+.matrix-sec{background:var(--pine);color:#E7EFE9}
+.matrix-sec .sec-head .mono{color:#D9B47A}
+.matrix-sec .sec-head p{color:#B9CCBF}
+.matrix{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.16)}
+.field{background:var(--pine);padding:22px 18px 26px}
+.field h3{font-size:16px;font-weight:600;color:#fff;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.2)}
+.field h3 small{font-family:var(--f-mono);font-size:11px;color:#D9B47A;font-weight:400}
+.field ol{margin:0;padding:0;list-style:none;display:grid;gap:7px;font-size:14.5px;counter-reset:it}
+.field li{display:flex;gap:8px;color:#D6E2D9}
+.field li::before{font-family:var(--f-mono);font-size:11px;color:rgba(255,255,255,.45);padding-top:3px;min-width:18px}
+.matrix-note{margin-top:20px;font-size:13.5px;color:#9FB7A7}
+
+/* process */
+.steps{display:grid;grid-template-columns:repeat(7,1fr);border-top:2px solid var(--ink);counter-reset:s}
+.step{padding:20px 14px 0 0;position:relative}
+.step::before{counter-increment:s;content:counter(s,decimal-leading-zero);font-family:var(--f-mono);font-size:12px;color:var(--ochre);display:block;margin-bottom:12px}
+.step::after{content:"";position:absolute;top:-6px;left:0;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--ink)}
+.step h3{font-size:16px;font-weight:600;line-height:1.45;margin-bottom:8px}
+.step p{margin:0;font-size:14px;color:var(--ink-2);line-height:1.6}
+.step .period{display:inline-block;margin-top:10px;font-family:var(--f-mono);font-size:11.5px;color:var(--pine);background:var(--paper-2);padding:2px 8px}
+.fine{margin-top:28px;font-size:13px;color:var(--ink-3)}
+
+/* records */
+.records-sec{background:var(--card);border-block:1px solid var(--line)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:680px}
+th{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);text-align:left;font-weight:400;padding:0 16px 12px 0;border-bottom:1px solid var(--line-2)}
+td{padding:18px 16px 18px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.y{font-family:var(--f-mono);color:var(--ink-3);font-variant-numeric:tabular-nums;width:80px}
+td .tag{font-size:12.5px;padding:2px 9px;border:1px solid var(--line-2);border-radius:2px;white-space:nowrap}
+td .tag.eia{border-color:var(--pine);color:var(--pine)}
+td .tag.post{border-color:var(--ochre);color:var(--ochre)}
+.example{display:inline-block;font-family:var(--f-mono);font-size:11px;color:var(--ochre);border:1px dashed var(--ochre);padding:1px 7px;margin-left:10px;vertical-align:middle}
+
+/* team */
+.team{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start}
+.team blockquote{margin:0;font-size:22px;line-height:1.6;font-weight:500;letter-spacing:-.01em}
+.team blockquote footer{margin-top:22px;font-size:15px;color:var(--ink-2);font-weight:400}
+.crew{border-top:1px solid var(--line-2)}
+.crew div{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line)}
+.crew span{color:var(--ink-2)}
+.crew b{font-family:var(--f-mono);font-weight:500;font-size:20px;font-variant-numeric:tabular-nums}
+.equip{margin-top:22px;font-size:14.5px;color:var(--ink-2)}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.2fr;gap:64px}
+.contact dl{margin:28px 0 0;display:grid;gap:14px}
+.contact dt{color:var(--ink-3)}
+.contact dd{margin:2px 0 0;font-size:17px;user-select:all}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form .full{grid-column:1/-1}
+label{display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
+input,select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line-2);border-radius:2px;padding:11px 12px}
+textarea{min-height:120px;resize:vertical}
+form .msg{grid-column:1/-1;color:var(--pine);font-weight:500;min-height:1.6em}
+
+footer.site{background:var(--ink);color:#AEBBB2;font-size:14px}
+footer.site .wrap{padding-block:48px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer.site b{color:#fff;letter-spacing:.18em}
+
+@media (max-width:960px){
+  nav.main{display:none}
+  header .btn{margin-left:auto}
+  .registry dl{grid-template-columns:1fr 1fr}
+  .registry div{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+  .sec-head{grid-template-columns:1fr;gap:8px}
+  .services{grid-template-columns:1fr}
+  .svc:nth-child(even){padding-left:0;border-left:0}
+  .matrix{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr;border-top:0;border-left:2px solid var(--ink);padding-left:22px;gap:26px}
+  .step::after{left:-29px;top:22px}
+  .team,.contact{grid-template-columns:1fr;gap:40px}
+  #contour{-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.6));mask-image:linear-gradient(180deg,rgba(0,0,0,.25),rgba(0,0,0,.6))}
+  .readout{display:none}
+}
+@media (max-width:560px){
+  section{padding-block:72px}
+  .hero .wrap{padding-block:64px}
+  .logo span{display:none}
+  .svc{grid-template-columns:1fr;padding-right:0}
+  .svc .code{width:72px}
+  .matrix{grid-template-columns:1fr}
+  form{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="draft"><div class="wrap">
+  <span><b>시안 A · 등고선</b> 정밀·과학형 — 실적·인원·연락처는 예시 값입니다.</span>
+  <a href="index.html">← 시안 목록</a>
+</div></div>
+
+<header class="site"><div class="wrap">
+  <a class="logo" href="#top" aria-label="테라비스 홈">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M15 2.5c7.2 0 12.5 4.8 12.5 11.6 0 7.4-5.6 13.4-12.9 13.4C7.6 27.5 2.5 22 2.5 15S7.8 2.5 15 2.5Z" stroke="#1C4935" stroke-width="1.6"/><path d="M15.2 8c4 0 6.8 2.7 6.8 6.4 0 4.1-3.1 7.3-7.1 7.3-3.8 0-6.6-3-6.6-6.8C8.3 11 11.2 8 15.2 8Z" stroke="#1C4935" stroke-width="1.6"/><circle cx="15" cy="14.8" r="2.2" fill="#B07228"/></svg>
+    <b>TERRAVIS</b><span>주식회사 테라비스</span>
+  </a>
+  <nav class="main" aria-label="주 메뉴">
+    <a href="#services">업무분야</a><a href="#items">평가항목</a><a href="#process">수행절차</a><a href="#records">수행실적</a><a href="#team">회사소개</a>
+  </nav>
+  <a class="btn solid" href="#contact">상담 신청</a>
+</div></header>
+
+<main id="top">
+<section class="hero" style="padding:0">
+  <canvas id="contour" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow mono">제1종 환경영향평가업 등록업체</div>
+      <h1>땅을 읽고,<br>개발과 보전의 <em>기준선</em>을<br>긋습니다.</h1>
+      <p class="lead">테라비스는 전략환경영향평가부터 사후환경영향조사까지, 계획 단계의 입지 검토에서 준공 후 모니터링까지 한 팀이 책임지는 환경영향평가 전문기업입니다.</p>
+      <div class="ctas">
+        <a class="btn solid" href="#contact">평가 상담 신청</a>
+        <a class="btn ghost" href="#services">업무분야 보기</a>
+      </div>
+    </div>
+  </div>
+  <div class="readout" aria-hidden="true">
+    <div>X <b id="rx">0.000</b> · Y <b id="ry">0.000</b> · EL <b id="rel">0</b> m</div>
+    <div>축척 1:5,000 · 주곡선 5 m · 계곡선 25 m</div>
+  </div>
+</section>
+
+<div class="registry"><div class="wrap"><dl>
+  <div><dt class="mono">업종</dt><dd>제1종 환경영향평가업</dd></div>
+  <div><dt class="mono">근거</dt><dd>「환경영향평가법」 제54조</dd></div>
+  <div><dt class="mono">등록기관</dt><dd>기후에너지환경부</dd></div>
+  <div><dt class="mono">등록번호</dt><dd>제 ○○○○-○○호</dd></div>
+</dl></div></div>
+
+<section id="services"><div class="wrap">
+  <div class="sec-head">
+    <div class="mono">01 · 업무분야</div>
+    <div>
+      <h2>사업의 단계마다 필요한 평가를<br>한 곳에서 수행합니다.</h2>
+      <p>계획 수립부터 공사·운영까지, 「환경영향평가법」이 정한 네 가지 평가서를 모두 작성·대행할 수 있는 것이 제1종 환경영향평가업입니다.</p>
+    </div>
+  </div>
+  <div class="services">
+    <article class="svc">
+      <div class="code">SEA</div>
+      <div><h3>전략환경영향평가</h3><div class="when">행정계획 수립 단계</div>
+      <p>정책계획과 개발기본계획을 세울 때 입지의 타당성과 계획의 적정성을 미리 검토해, 사업 단계의 갈등과 재검토 위험을 줄입니다.</p>
+      <ul><li>정책계획</li><li>개발기본계획</li><li>대안 비교</li></ul></div>
+    </article>
+    <article class="svc">
+      <div class="code">EIA</div>
+      <div><h3>환경영향평가</h3><div class="when">실시계획·인허가 단계</div>
+      <p>일정 규모 이상의 개발사업이 6개 분야 21개 항목에 미치는 영향을 조사·예측하고, 저감방안과 협의 대응까지 수행합니다.</p>
+      <ul><li>산업단지</li><li>도시개발</li><li>도로·철도</li><li>에너지</li></ul></div>
+    </article>
+    <article class="svc">
+      <div class="code">S-EIA</div>
+      <div><h3>소규모환경영향평가</h3><div class="when">보전용도지역 내 개발</div>
+      <p>관리지역·농림지역·자연환경보전지역 등에서 이뤄지는 소규모 개발사업의 입지와 환경영향을 검토하고 협의를 진행합니다.</p>
+      <ul><li>태양광발전</li><li>공장·창고</li><li>개발행위허가</li></ul></div>
+    </article>
+    <article class="svc">
+      <div class="code">PEIS</div>
+      <div><h3>사후환경영향조사</h3><div class="when">공사·운영 단계</div>
+      <p>협의내용이 현장에서 제대로 이행되는지 계절별로 측정·조사하고, 결과서 작성과 저감대책 보완을 지원합니다.</p>
+      <ul><li>협의내용 관리</li><li>정기 측정</li><li>결과 통보</li></ul></div>
+    </article>
+  </div>
+  <p class="related"><b>관련 업무</b>건강영향평가 · 자연경관심의 · 환경성 현황조사 · 생태계 정밀조사 · 대체서식지 계획</p>
+</div></section>
+
+<section id="items" class="matrix-sec"><div class="wrap">
+  <div class="sec-head">
+    <div class="mono">02 · 평가항목</div>
+    <div>
+      <h2>6개 분야 21개 항목을<br>빠짐없이 조사합니다.</h2>
+      <p>환경영향평가의 평가항목입니다. 사업 특성에 따라 환경영향평가협의회에서 중점·현황·제외 항목을 정하고, 테라비스는 그 범위를 설계하는 단계부터 참여합니다.</p>
+    </div>
+  </div>
+  <div class="matrix">
+    <div class="field"><h3>자연생태 <small>2</small></h3><ol><li>동·식물상</li><li>자연환경자산</li></ol></div>
+    <div class="field"><h3>대기환경 <small>4</small></h3><ol><li>기상</li><li>대기질</li><li>악취</li><li>온실가스</li></ol></div>
+    <div class="field"><h3>수환경 <small>3</small></h3><ol><li>수질</li><li>수리·수문</li><li>해양환경</li></ol></div>
+    <div class="field"><h3>토지환경 <small>3</small></h3><ol><li>토지이용</li><li>토양</li><li>지형·지질</li></ol></div>
+    <div class="field"><h3>생활환경 <small>6</small></h3><ol><li>친환경적 자원순환</li><li>소음·진동</li><li>위락·경관</li><li>위생·공중보건</li><li>전파장해</li><li>일조장해</li></ol></div>
+    <div class="field"><h3>사회경제 <small>3</small></h3><ol><li>인구</li><li>주거</li><li>산업</li></ol></div>
+  </div>
+  <p class="matrix-note">대기·소음·수질 현황은 직접 측정하고, 동·식물상은 계절별 현지조사로 확인합니다.</p>
+</div></section>
+
+<section id="process"><div class="wrap">
+  <div class="sec-head">
+    <div class="mono">03 · 수행절차</div>
+    <div>
+      <h2>환경영향평가는 이렇게 진행됩니다.</h2>
+      <p>평가준비서부터 협의 완료, 사후조사까지의 일반적인 순서입니다. 단계마다 담당 책임자가 일정과 제출 서류를 관리합니다.</p>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step"><h3>평가준비서 작성</h3><p>사업계획 검토, 평가항목·범위 초안 마련</p></div>
+    <div class="step"><h3>협의회 심의</h3><p>환경영향평가협의회에서 항목·범위·대안 결정</p></div>
+    <div class="step"><h3>현지조사·초안</h3><p>계절별 현황조사, 영향 예측, 저감방안 수립</p></div>
+    <div class="step"><h3>주민 의견수렴</h3><p>공고·공람, 설명회, 필요 시 공청회</p><span class="period">공람 20~60일</span></div>
+    <div class="step"><h3>본안 작성</h3><p>주민·관계기관 의견을 반영해 평가서 확정</p></div>
+    <div class="step"><h3>협의</h3><p>승인기관을 거쳐 기후에너지환경부 검토, 보완 대응</p><span class="period">45일 (+15일)</span></div>
+    <div class="step"><h3>사후환경영향조사</h3><p>협의내용 이행 확인, 정기 측정·결과 통보</p></div>
+  </div>
+  <p class="fine">표시된 기간은 「환경영향평가법」 및 같은 법 시행령의 일반 기준이며, 사업 유형과 보완 요청에 따라 달라질 수 있습니다.</p>
+</div></section>
+
+<section id="records" class="records-sec"><div class="wrap">
+  <div class="sec-head">
+    <div class="mono">04 · 수행실적</div>
+    <div><h2>최근 수행실적 <span class="example">예시</span></h2>
+    <p>실제 실적 목록으로 교체될 자리입니다. 사업명·발주처는 공개 범위에 맞춰 표기합니다.</p></div>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>연도</th><th>사업명</th><th>구분</th><th>사업 규모</th><th>발주처</th></tr></thead>
+    <tbody>
+      <tr><td class="y">2026</td><td>○○ 일반산업단지 조성사업</td><td><span class="tag eia">환경영향평가</span></td><td>1,250,000 m²</td><td>○○도시공사</td></tr>
+      <tr><td class="y">2026</td><td>○○ 태양광발전시설 설치사업</td><td><span class="tag">소규모</span></td><td>48,600 m²</td><td>민간</td></tr>
+      <tr><td class="y">2025</td><td>○○시 도시기본계획(2040)</td><td><span class="tag eia">전략</span></td><td>시 전역</td><td>○○시</td></tr>
+      <tr><td class="y">2025</td><td>국도 ○○호선 ○○~○○ 확장공사</td><td><span class="tag post">사후조사</span></td><td>L = 8.4 km</td><td>○○국토관리청</td></tr>
+      <tr><td class="y">2025</td><td>○○ 도시개발사업</td><td><span class="tag eia">환경영향평가</span></td><td>412,000 m²</td><td>○○시</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="team"><div class="wrap">
+  <div class="sec-head">
+    <div class="mono">05 · 회사소개</div>
+    <div><h2>조사한 사람이 평가서를 씁니다.</h2></div>
+  </div>
+  <div class="team">
+    <blockquote>
+      “현장을 직접 걸은 연구원이 보고서를 쓰고, 협의 회의에도 함께 들어갑니다. 평가서의 숫자 하나하나에 책임질 수 있는 구조를 만드는 것이 테라비스의 원칙입니다.”
+      <footer>대표이사 ○○○</footer>
+    </blockquote>
+    <div>
+      <div class="mono" style="color:var(--ink-3);margin-bottom:12px">기술인력 구성 <span class="example">예시</span></div>
+      <div class="crew">
+        <div><span>환경영향평가사</span><b>03</b></div>
+        <div><span>기술사 (대기·수질·소음진동·자연환경)</span><b>04</b></div>
+        <div><span>기사·산업기사</span><b>12</b></div>
+        <div><span>생태조사 전문인력</span><b>06</b></div>
+      </div>
+      <p class="equip">보유 장비: 대기질 자동측정장비, 소음·진동 측정기, 다항목 수질측정기, 무인항공기(드론), GIS 분석 환경</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="contact" class="records-sec"><div class="wrap">
+  <div class="contact">
+    <div>
+      <div class="mono" style="color:var(--ochre)">06 · 상담 신청</div>
+      <h2 style="font-size:clamp(26px,3.2vw,38px);font-weight:600;line-height:1.3;margin-top:14px">사업 위치와 규모만 알려주시면<br>대상 여부부터 검토해 드립니다.</h2>
+      <dl>
+        <div><dt class="mono">대표전화</dt><dd>02-000-0000</dd></div>
+        <div><dt class="mono">이메일</dt><dd>contact@terravis.co.kr</dd></div>
+        <div><dt class="mono">주소</dt><dd>서울특별시 ○○구 ○○로 00, 0층</dd></div>
+      </dl>
+    </div>
+    <form id="f-a" novalidate>
+      <label>성함·회사명<input id="a-name" required placeholder="홍길동 / ○○개발"></label>
+      <label>연락처<input id="a-tel" placeholder="010-0000-0000"></label>
+      <label>평가 구분<select id="a-type"><option>아직 모르겠습니다</option><option>전략환경영향평가</option><option>환경영향평가</option><option>소규모환경영향평가</option><option>사후환경영향조사</option></select></label>
+      <label>사업 면적<input id="a-area" placeholder="예: 35,000 m²"></label>
+      <label class="full">사업 위치와 내용<textarea id="a-msg" placeholder="○○시 ○○면 일원, 물류창고 신축 예정"></textarea></label>
+      <div class="full"><button class="btn solid" type="submit">상담 신청하기</button></div>
+      <p class="msg" id="a-out" role="status"></p>
+    </form>
+  </div>
+</div></section>
+</main>
+
+<footer class="site"><div class="wrap">
+  <div><b>TERRAVIS</b><br>주식회사 테라비스 · 대표이사 ○○○ · 사업자등록번호 000-00-00000</div>
+  <div>제1종 환경영향평가업 등록 제 ○○○○-○○호<br>© 2026 Terravis Co., Ltd.</div>
+</div></footer>
+
+<script>
+(function(){
+  const cv=document.getElementById('contour'), ctx=cv.getContext('2d');
+  const hills=[{x:.74,y:.34,a:1,s:.15},{x:.93,y:.78,a:.7,s:.13},{x:.55,y:.86,a:.45,s:.17},{x:.36,y:.18,a:.35,s:.16},{x:.63,y:.6,a:.38,s:.07},{x:.86,y:.12,a:.4,s:.09}];
+  let W=0,H=0;
+  function elev(u,v){
+    let z=0; const k=W/H;
+    for(const h of hills){const dx=(u-h.x)*k*.6, dy=v-h.y; z+=h.a*Math.exp(-(dx*dx+dy*dy)/(2*h.s*h.s));}
+    return z+.05*Math.sin(u*9+v*4)+.035*Math.cos(v*11-u*5);
+  }
+  const SEG={1:[[3,2]],2:[[2,1]],3:[[3,1]],4:[[0,1]],5:[[3,0],[2,1]],6:[[0,2]],7:[[3,0]],8:[[3,0]],9:[[0,2]],10:[[0,1],[3,2]],11:[[0,1]],12:[[3,1]],13:[[2,1]],14:[[3,2]]};
+  function draw(){
+    const r=cv.getBoundingClientRect(), d=Math.min(devicePixelRatio||1,2);
+    W=r.width;H=r.height; if(!W||!H)return;
+    cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,H);
+    const st=8,nx=Math.ceil(W/st)+1,ny=Math.ceil(H/st)+1,g=new Float32Array(nx*ny);
+    for(let j=0;j<ny;j++)for(let i=0;i<nx;i++)g[j*nx+i]=elev(i*st/W,j*st/H);
+    const step=.04;
+    for(let L=-.1,n=0;L<1.3;L+=step,n++){
+      const idx=n%5===0;
+      ctx.beginPath();
+      for(let j=0;j<ny-1;j++)for(let i=0;i<nx-1;i++){
+        const tl=g[j*nx+i],tr=g[j*nx+i+1],br=g[(j+1)*nx+i+1],bl=g[(j+1)*nx+i];
+        const c=(tl>L?8:0)|(tr>L?4:0)|(br>L?2:0)|(bl>L?1:0); if(!c||c===15)continue;
+        const x0=i*st,y0=j*st;
+        const P=e=>e===0?[x0+st*(L-tl)/(tr-tl),y0]:e===1?[x0+st,y0+st*(L-tr)/(br-tr)]:e===2?[x0+st*(L-bl)/(br-bl),y0+st]:[x0,y0+st*(L-tl)/(bl-tl)];
+        for(const [a,b] of SEG[c]){const p=P(a),q=P(b);ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);}
+      }
+      ctx.strokeStyle=idx?'rgba(28,73,53,.62)':'rgba(28,73,53,.26)';
+      ctx.lineWidth=idx?1.3:.8;ctx.stroke();
+    }
+    const pts=[[.62,.3,'대기 St.1'],[.84,.56,'소음 St.2'],[.71,.8,'수질 St.3'],[.92,.24,'동식물 T-1']];
+    ctx.font='500 11px "IBM Plex Mono","IBM Plex Sans KR",monospace';
+    for(const [u,v,t] of pts){const x=u*W,y=v*H;
+      ctx.strokeStyle='#B07228';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x-6,y);ctx.lineTo(x+6,y);ctx.moveTo(x,y-6);ctx.lineTo(x,y+6);ctx.stroke();
+      ctx.fillStyle='#8a5718';ctx.fillText(t,x+9,y-7);}
+  }
+  draw(); let t; addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(draw,120)});
+  if(document.fonts)document.fonts.ready.then(draw);
+  const hero=cv.parentElement,rx=document.getElementById('rx'),ry=document.getElementById('ry'),rel=document.getElementById('rel');
+  hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect(),u=(e.clientX-r.left)/r.width,v=(e.clientY-r.top)/r.height;
+    rx.textContent=u.toFixed(3);ry.textContent=v.toFixed(3);rel.textContent=Math.max(0,Math.round(40+elev(u,v)*180));});
+  document.getElementById('f-a').addEventListener('submit',e=>{e.preventDefault();
+    const n=document.getElementById('a-name').value.trim();
+    document.getElementById('a-out').textContent=n?`${n} 님, 시안 화면이라 실제로 전송되지는 않습니다. 운영 시 담당자에게 접수됩니다.`:'성함 또는 회사명을 입력해 주세요.';});
+})();
+</script>
+</body>
+</html>
