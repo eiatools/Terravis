@@ -47,6 +47,18 @@ th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vert
 th{color:var(--fg-2);font-weight:500;width:140px}
 tr:last-child td,tr:last-child th{border-bottom:0}
 .notes{margin-top:26px;color:var(--fg-2);font-size:13.5px;display:grid;gap:4px}
+.site-box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:30px;display:grid;grid-template-columns:1fr 1.3fr;gap:32px;margin-bottom:44px}
+.site-box>*{min-width:0}
+.site-box>div{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.site-box .k{font-size:12.5px;font-weight:700;color:var(--teal);letter-spacing:.04em}
+.site-box h2{font-size:24px;font-weight:900;letter-spacing:-.02em}
+.site-box p{margin:0;color:var(--fg-2)}
+.site-box .go{margin-top:8px}
+.pages{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line)}
+.pages a{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--fg)}
+.pages a:hover b{color:var(--teal)}
+.pages span{color:var(--fg-2);font-size:14px}
+@media (max-width:900px){.site-box{grid-template-columns:1fr}.pages a{grid-template-columns:1fr;gap:0}}
 @media (max-width:900px){.grid{grid-template-columns:1fr}.thumb{aspect-ratio:16/7}.top{grid-template-columns:auto 1fr}.top .chip{display:none}}
 @media (max-width:520px){.top{grid-template-columns:1fr;padding:20px}.top img{height:48px}}
 </style>
@@ -58,12 +70,29 @@ tr:last-child td,tr:last-child th{border-bottom:0}
       <h1>주식회사 테라비스 홈페이지 시안</h1>
       <p>로고와 대표이사 명함을 기준으로 다시 만든 세 가지 방향입니다. 카드를 눌러 전체 페이지를 확인하세요.</p>
     </div>
-    <span class="chip">2026.11 · 2차 시안</span>
+    <span class="chip">2026.11 · 확정안 A</span>
   </div>
 
+  <section class="site-box" aria-labelledby="site-title">
+    <div>
+      <span class="k">확정안 · 시안 A 기준</span>
+      <h2 id="site-title">테라비스 홈페이지 (5개 페이지)</h2>
+      <p>시안 A를 바탕으로 메인과 하위 페이지를 모두 만들었습니다. 상단 메뉴로 페이지를 오갈 수 있습니다.</p>
+      <a class="go" href="site/index.html">홈페이지 열기</a>
+    </div>
+    <ul class="pages">
+      <li><a href="site/index.html"><b>메인</b><span>업무분야, 수행 절차, 대표 인사말, 두 사무소</span></a></li>
+      <li><a href="site/about.html"><b>회사소개</b><span>인사말, 핵심가치, 회사개요, 연혁, 조직, CI, 오시는 길</span></a></li>
+      <li><a href="site/services.html"><b>업무분야</b><span>평가 4종의 대상, 주요 업무, 산출물, 관련 업무</span></a></li>
+      <li><a href="site/process.html"><b>평가항목·절차</b><span>21개 평가항목, 유형별 절차·기간 탭, 계절별 조사</span></a></li>
+      <li><a href="site/contact.html"><b>고객문의</b><span>상담 양식, 상담 진행 순서, 오시는 길</span></a></li>
+    </ul>
+  </section>
+
+  <h3 class="sub" style="margin-top:0">2차 시안 3종</h3>
   <div class="grid">
     <article class="card a">
-      <div class="thumb"><img src="assets/logo-horizontal.webp" alt="" width="1959" height="459"><span class="t">땅을 깊이 보고,<br><em>지속 가능한 개발</em>의 길</span></div>
+      <div class="thumb"><img src="assets/logo-horizontal.webp" alt="" width="1959" height="459"><span class="t"><em>지속 가능한 개발</em>의<br>길을 엽니다</span></div>
       <div class="body">
         <span class="k">시안 A · 명함형</span>
         <h2>단정한 기업형</h2>
@@ -107,7 +136,7 @@ tr:last-child td,tr:last-child th{border-bottom:0}
   </table></div>
 
   <div class="notes">
-    <span>· 회사명, 대표이사, 주소 2곳, 휴대전화, 이메일, 웹주소는 명함 내용을 그대로 반영했습니다. 대표전화·팩스·사업자등록번호는 비워 두었습니다.</span>
+    <span>· 회사명, 대표이사, 주소 2곳, 이메일, 웹주소는 명함 내용을 반영했습니다. 휴대전화 번호는 싣지 않았고, 대표전화·팩스·사업자등록번호는 비워 두었습니다.</span>
     <span>· 대표이사 인사말(시안 A)과 거점별 권역 구분(시안 C)은 예시 문안입니다.</span>
     <span>· 명함 서체인 Pretendard를 우선 지정했고, 설치되지 않은 환경에서는 Noto Sans KR로 표시됩니다.</span>
     <span>· 법령 표현은 2025년 10월 개정된 「환경영향평가법」(소관 기후에너지환경부) 기준입니다.</span>
